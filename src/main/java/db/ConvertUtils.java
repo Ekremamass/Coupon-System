@@ -13,7 +13,7 @@ import java.util.Map;
 public class ConvertUtils {
 
     public static Coupon couponFromPairs(Map<String, Object> map) {
-        long id = (int) map.get("id");
+        int id = (int) map.get("id");
         int companyId = (int) map.get("company_id");
         String category = (String) map.get("category");
         String title = (String) map.get("title");

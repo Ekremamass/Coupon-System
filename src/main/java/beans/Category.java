@@ -6,4 +6,8 @@ public enum Category {
     RESTAURANT,
     VACATION;
 
+    public int DBValue() {
+        return this.ordinal() + 1;
+    }
+
 }

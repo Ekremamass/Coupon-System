@@ -1,5 +1,16 @@
 package db;
 
+import beans.Category;
+import beans.Company;
+import beans.Coupon;
+import beans.Customer;
+import dao.*;
+
+import java.sql.Date;
+import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * Created by kobis on 13 Mar, 2023
  */
@@ -8,6 +19,11 @@ public class DatabaseManager {
 
     private static final String CREATE_SCHEMA = "CREATE SCHEMA `coupon_system`";
     private static final String DROP_SCHEMA = "DROP SCHEMA `coupon_system`";
+
+    private static final CategoryDAO categoryDAO = new CategoryDAOImpl();
+    private static final CustomerDAO customerDAO = new CustomerDAOImpl();
+    private static final CompanyDAO companyDAO = new CompanyDAOImpl();
+    private static final CoupnDAO couponDAO = new CouponDAOImpl();
 
 
     private static final String CREATE_TABLE_COMPANIES = "CREATE TABLE `coupon_system`.`companies` (\n" +
@@ -78,12 +94,190 @@ public class DatabaseManager {
         db.DBUtils.runQuery(CREATE_TABLE_CATEGORIES);
         db.DBUtils.runQuery(CREATE_TABLE_COUPONS);
         db.DBUtils.runQuery(CREATE_TABLE_CUSTOMERS_VS_COUPONS);
+        initDatabase();
         db.ConnectionPool.getConnectionPool();
 
     }
 
-    public static void endDatabase(){
+    public static void endDatabase() {
         db.ConnectionPool.getConnectionPool().closeAllConnections();
     }
 
+    private static void initDatabase() {
+        updateCategoriesTable();
+        loadCustomers();
+        loadCompanies();
+        loadCoupons();
+    }
+
+    private static void updateCategoriesTable() {
+        Arrays.stream(Category.values()).forEach(categoryDAO::add);
+    }
+
+    private static void loadCustomers() {
+        Customer c1 = Customer.builder()
+                .firstName("John")
+                .lastName("Doe")
+                .email("johndoe@email.com")
+                .password("1234")
+                .build();
+
+        Customer c2 = Customer.builder()
+                .firstName("Jane")
+                .lastName("Smith")
+                .email("janesmith@email.com")
+                .password("1234")
+                .build();
+
+        Customer c3 = Customer.builder()
+                .firstName("Bob")
+                .lastName("Jones")
+                .email("bobjones@email.com")
+                .password("1234")
+                .build();
+
+        Customer c4 = Customer.builder()
+                .firstName("Samantha")
+                .lastName("Lee")
+                .email("samlee@email.com")
+                .password("1234")
+                .build();
+
+        Customer c5 = Customer.builder()
+                .firstName("Michael")
+                .lastName("Johnson")
+                .email("michaelj@email.com")
+                .password("1234")
+                .build();
+
+        Customer c6 = Customer.builder()
+                .firstName("Emily")
+                .lastName("Davis")
+                .email("emilyd@email.com")
+                .password("1234")
+                .build();
+
+        Customer c7 = Customer.builder()
+                .firstName("Chris")
+                .lastName("Wilson")
+                .email("chrisw@email.com")
+                .password("1234")
+                .build();
+
+        Customer c8 = Customer.builder()
+                .firstName("Amanda")
+                .lastName("Taylor")
+                .email("amandat@email.com")
+                .password("1234")
+                .build();
+
+        Customer c9 = Customer.builder()
+                .firstName("David")
+                .lastName("Garcia")
+                .email("davidg@email.com")
+                .password("1234")
+                .build();
+
+        Customer c10 = Customer.builder()
+                .firstName("Maria")
+                .lastName("Martinez")
+                .email("mariam@email.com")
+                .password("1234")
+                .build();
+
+        List<Customer> customers = List.of(c1, c2, c3, c4, c5, c6, c7, c8, c9, c10);
+        customerDAO.addAll(customers);
+
+    }
+
+    private static void loadCompanies() {
+        Company c1 = Company.builder()
+                .name("KSP")
+                .email("KSP@KSP.com")
+                .password("1234")
+                .build();
+        Company c2 = Company.builder()
+                .name("BBB")
+                .email("info@BBB.com")
+                .password("1234")
+                .build();
+
+        Company c3 = Company.builder()
+                .name("Global Industries")
+                .email("info@globalindustries.com")
+                .password("1234")
+                .build();
+
+        Company c4 = Company.builder()
+                .name("Innovative Solutions")
+                .email("info@innovativesolutions.com")
+                .password("1234")
+                .build();
+
+        Company c5 = Company.builder()
+                .name("Web Solutions Inc.")
+                .email("info@websolutionsinc.com")
+                .password("1234")
+                .build();
+
+        Company c6 = Company.builder()
+                .name("Best Buy Co. Inc.")
+                .email("info@bestbuy.com")
+                .password("1234")
+                .build();
+
+        Company c7 = Company.builder()
+                .name("Newegg Inc.")
+                .email("info@newegg.com")
+                .password("1234")
+                .build();
+
+        Company c8 = Company.builder()
+                .name("Nike Inc.")
+                .email("info@nike.com")
+                .password("1234")
+                .build();
+
+        Company c9 = Company.builder()
+                .name("The Coca-Cola Company")
+                .email("info@coca-cola.com")
+                .password("1234")
+                .build();
+
+        Company c10 = Company.builder()
+                .name("Walmart Inc.")
+                .email("info@walmart.com")
+                .password("1234")
+                .build();
+
+        List<Company> companies = List.of(c1, c2, c3, c4, c5, c6, c7, c8, c9, c10);
+        companyDAO.addAll(companies);
+
+    }
+
+    private static void loadCoupons() {
+        Coupon c1 = Coupon.builder()
+                .companyID(2)
+                .category(Category.RESTAURANT)
+                .title("1+1 Burger")
+                .description("buy burger 200g and get second for free")
+                .startDate(Date.valueOf(LocalDate.now()))
+                .endDate(Date.valueOf(LocalDate.now().plusWeeks(2)))
+                .amount(100)
+                .price(70.0)
+                .image("https://media3.giphy.com/media/IgOEWPOgK6uVa/giphy.gif?cid=ecf05e47dtsmbz3xkfjphy7ul1fj4iluf7uke5ww1kmf7dao&rid=giphy.gif&ct=g")
+                .build();
+
+        Coupon c2 = Coupon.builder()
+                .companyID(7)
+                .category(Category.ELECTRICITY)
+                .title("Dell free mouse")
+                .description("buy DELL laptop and get mouse for free")
+                .startDate(Date.valueOf(LocalDate.now()))
+                .endDate(Date.valueOf(LocalDate.now().plusWeeks(3)))
+                .amount(100)
+                .price(2900.0)
+                .image("https://media3.giphy.com/media/IgOEWPOgK6uVa/giphy.gif?cid=ecf05e47dtsmbz3xkfjphy7ul1fj4iluf7uke5ww1kmf7dao&rid=giphy.gif&ct=g")
+                .build();
+    }
 }

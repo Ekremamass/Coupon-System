@@ -92,7 +92,7 @@ public class DBUtils {
     }
 
     private static void closeConnection(Connection connection) {
-        ConnectionPool.getConnectionPool().returnConnection(connection);
+        ConnectionPool.getConnectionPool().restoreConnection(connection);
     }
 
     private static PreparedStatement getPreparedStatement(Connection connection, String sql) {
