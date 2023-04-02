@@ -5,6 +5,7 @@ import beans.Company;
 import beans.Coupon;
 import beans.Customer;
 import dao.*;
+import utils.Art;
 
 import java.sql.Date;
 import java.time.LocalDate;
@@ -56,15 +57,17 @@ public class DatabaseManager {
             "  `end_date` DATE NOT NULL,\n" +
             "  `amount` INT NOT NULL,\n" +
             "  `price` DOUBLE NOT NULL,\n" +
-            "  `image` VARCHAR(45) NOT NULL,\n" +
+            "  `image` VARCHAR(150) NOT NULL,\n" +
             "  PRIMARY KEY (`id`),\n" +
+            "  INDEX `category_id_idx` (`category_id` ASC) VISIBLE,\n" +
+            "  INDEX `company_id_idx` (`company_id` ASC) VISIBLE,\n" +
             "  CONSTRAINT `company_id`\n" +
-            "    FOREIGN KEY (`id`)\n" +
+            "    FOREIGN KEY (`company_id`)\n" +
             "    REFERENCES `coupon_system`.`companies` (`id`)\n" +
             "    ON DELETE NO ACTION\n" +
             "    ON UPDATE NO ACTION,\n" +
             "  CONSTRAINT `category_id`\n" +
-            "    FOREIGN KEY (`id`)\n" +
+            "    FOREIGN KEY (`category_id`)\n" +
             "    REFERENCES `coupon_system`.`categories` (`id`)\n" +
             "    ON DELETE NO ACTION\n" +
             "    ON UPDATE NO ACTION);\n";
@@ -84,7 +87,6 @@ public class DatabaseManager {
             "    REFERENCES `coupon_system`.`coupons` (`id`)\n" +
             "    ON DELETE NO ACTION\n" +
             "    ON UPDATE NO ACTION);\n";
-
 
     public static void startDatabase() {
         db.DBUtils.runQuery(DROP_SCHEMA);
@@ -115,6 +117,7 @@ public class DatabaseManager {
     }
 
     private static void loadCustomers() {
+        System.out.println(Art.CUSTOMERS);
         Customer c1 = Customer.builder()
                 .firstName("John")
                 .lastName("Doe")
@@ -188,9 +191,13 @@ public class DatabaseManager {
         List<Customer> customers = List.of(c1, c2, c3, c4, c5, c6, c7, c8, c9, c10);
         customerDAO.addAll(customers);
 
+        customerDAO.getAll().forEach(System.out::println);
+        System.out.println("-------------------------------------------------");
+
     }
 
     private static void loadCompanies() {
+        System.out.println(Art.COMPANIES);
         Company c1 = Company.builder()
                 .name("KSP")
                 .email("KSP@KSP.com")
@@ -209,8 +216,8 @@ public class DatabaseManager {
                 .build();
 
         Company c4 = Company.builder()
-                .name("Innovative Solutions")
-                .email("info@innovativesolutions.com")
+                .name("Tours")
+                .email("info@tours.com")
                 .password("1234")
                 .build();
 
@@ -253,9 +260,12 @@ public class DatabaseManager {
         List<Company> companies = List.of(c1, c2, c3, c4, c5, c6, c7, c8, c9, c10);
         companyDAO.addAll(companies);
 
+        companyDAO.getAll().forEach(System.out::println);
+        System.out.println("---------------------------------------------------------------");
     }
 
     private static void loadCoupons() {
+        System.out.println(Art.COUPONS);
         Coupon c1 = Coupon.builder()
                 .companyID(2)
                 .category(Category.RESTAURANT)
@@ -277,7 +287,25 @@ public class DatabaseManager {
                 .endDate(Date.valueOf(LocalDate.now().plusWeeks(3)))
                 .amount(100)
                 .price(2900.0)
-                .image("https://media3.giphy.com/media/IgOEWPOgK6uVa/giphy.gif?cid=ecf05e47dtsmbz3xkfjphy7ul1fj4iluf7uke5ww1kmf7dao&rid=giphy.gif&ct=g")
+                .image("https://media1.giphy.com/media/W639VPdqy5uX5NZPvN/giphy.gif?cid=ecf05e47fyz661w3v079lpayvlpazh00yqazjtbphrv1xva4&rid=giphy.gif&ct=g")
                 .build();
+
+        Coupon c3 = Coupon.builder()
+                .companyID(4)
+                .category(Category.VACATION)
+                .title("All included London")
+                .description("everything included travel to london")
+                .startDate(Date.valueOf(LocalDate.now()))
+                .endDate(Date.valueOf(LocalDate.now().plusWeeks(2)))
+                .amount(50)
+                .price(4200.0)
+                .image("https://media1.giphy.com/media/3o6nV8OYdUhiuKja1i/giphy.gif?cid=ecf05e47zap0mk2hvwrmdnqhz58v80tufdxbq8tbjpyx3bbq&rid=giphy.gif&ct=g")
+                .build();
+
+        List<Coupon> coupons = List.of(c1, c2, c3);
+        couponDAO.addAll(coupons);
+
+        couponDAO.getAll().forEach(System.out::println);
+        System.out.println("-----------------------------------------------------");
     }
 }
