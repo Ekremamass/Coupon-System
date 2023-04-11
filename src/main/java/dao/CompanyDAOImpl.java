@@ -15,6 +15,7 @@ public class CompanyDAOImpl implements CompanyDAO {
     private static final String DELETE_COMPANY = "DELETE FROM coupon_system.companies WHERE id = ?";
     private static final String GET_ALL_COMPANIES = "SELECT * FROM coupon_system.companies";
     private static final String GET_ONE_COMPANY = "SELECT * FROM coupon_system.companies WHERE id = ?";
+    private static final String EXISTS_COMPANY = "SELECT EXISTS (SELECT * FROM coupon_system.companies WHERE id = ?) as res";
 
     @Override
     public void add(Company company) {
@@ -64,6 +65,10 @@ public class CompanyDAOImpl implements CompanyDAO {
 
     @Override
     public boolean isExist(Integer id) {
-        return false;
+        Map<Integer, Object> params = new HashMap<>();
+        params.put(1, id);
+        List<?> results = DBUtils.runQueryWithResultSet(EXISTS_COMPANY, params);
+        boolean result = ConvertUtils.booleanFromPairs((Map<String, Object>) results.get(0));
+        return result;
     }
 }

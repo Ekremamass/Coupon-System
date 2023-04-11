@@ -6,8 +6,6 @@ public class App {
         System.out.println(Art.LOGO);
         System.out.println("-----------------------------------------------------");
         DatabaseManager.startDatabase();
-
-
         DatabaseManager.endDatabase();
         System.out.println(Art.END);
     }

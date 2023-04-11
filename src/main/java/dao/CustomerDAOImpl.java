@@ -15,6 +15,7 @@ public class CustomerDAOImpl implements CustomerDAO {
     private static final String DELETE_CUSTOMER = "DELETE FROM coupon_system.customers WHERE id = ?";
     private static final String GET_ALL_CUSTOMERS = "SELECT * FROM coupon_system.customers";
     private static final String GET_ONE_CUSTOMER = "SELECT * FROM coupon_system.customers WHERE id = ?";
+    private static final String EXISTS_CUSTOMER = "SELECT EXISTS (SELECT * FROM coupon_system.customers WHERE id = ?) as res";
 
     @Override
     public void add(Customer customer) {
@@ -67,6 +68,10 @@ public class CustomerDAOImpl implements CustomerDAO {
 
     @Override
     public boolean isExist(Integer id) {
-        return false;
+        Map<Integer, Object> params = new HashMap<>();
+        params.put(1, id);
+        List<?> results = DBUtils.runQueryWithResultSet(EXISTS_CUSTOMER, params);
+        boolean result = ConvertUtils.booleanFromPairs((Map<String, Object>) results.get(0));
+        return result;
     }
 }
