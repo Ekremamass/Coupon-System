@@ -17,6 +17,5 @@ public interface DAO<T, PK> {
 
     T getOne(PK pk);
 
-    boolean isExist(PK pk);
-
+    boolean isExistsById(PK pk);
 }

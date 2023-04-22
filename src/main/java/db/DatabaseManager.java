@@ -21,10 +21,10 @@ public class DatabaseManager {
     private static final String CREATE_SCHEMA = "CREATE SCHEMA `coupon_system`";
     private static final String DROP_SCHEMA = "DROP SCHEMA `coupon_system`";
 
-    private static final CategoryDAO categoryDAO = new CategoryDAOImpl();
-    private static final CustomerDAO customerDAO = new CustomerDAOImpl();
-    private static final CompanyDAO companyDAO = new CompanyDAOImpl();
-    private static final CoupnDAO couponDAO = new CouponDAOImpl();
+    private static final CategoriesDAO categoryDAO = new CategoriesDAOImpl();
+    private static final CustomersDAO customerDAO = new CustomersDAOImpl();
+    private static final CompaniesDAO companyDAO = new CompaniesDAOImpl();
+    private static final CouponsDAO couponDAO = new CouponsDAOImpl();
 
 
     private static final String CREATE_TABLE_COMPANIES = "CREATE TABLE `coupon_system`.`companies` (\n" +

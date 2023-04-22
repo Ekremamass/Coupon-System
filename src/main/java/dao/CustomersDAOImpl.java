@@ -9,13 +9,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CustomerDAOImpl implements CustomerDAO {
+public class CustomersDAOImpl implements CustomersDAO {
     private static final String INSERT_CUSTOMER = "INSERT INTO `coupon_system`.`customers` (`first_name`, `last_name`, `email`, `password`) VALUES (?,?, ?, ? );\n";
     private static final String UPDATE_CUSTOMER = "UPDATE `coupon_system`.`customers` SET `first_name` = ?, `last_name` = ?, `email` = ?, `password` = ? WHERE (`id` = ?);\n";
     private static final String DELETE_CUSTOMER = "DELETE FROM coupon_system.customers WHERE id = ?";
     private static final String GET_ALL_CUSTOMERS = "SELECT * FROM coupon_system.customers";
     private static final String GET_ONE_CUSTOMER = "SELECT * FROM coupon_system.customers WHERE id = ?";
-    private static final String EXISTS_CUSTOMER = "SELECT EXISTS (SELECT * FROM coupon_system.customers WHERE id = ?) as res";
+    private static final String EXISTS_CUSTOMER = "SELECT EXISTS (SELECT * FROM coupon_system.customers WHERE email = ? AND password = ?) as res";
+    private static final String EXISTS_ID = "SELECT EXISTS (SELECT * FROM coupon_system.customers WHERE id = ?) as res";
+
 
     @Override
     public void add(Customer customer) {
@@ -67,9 +69,20 @@ public class CustomerDAOImpl implements CustomerDAO {
     }
 
     @Override
-    public boolean isExist(Integer id) {
+    public boolean isExistsById(Integer id) {
         Map<Integer, Object> params = new HashMap<>();
         params.put(1, id);
+        List<?> results = DBUtils.runQueryWithResultSet(EXISTS_ID, params);
+        boolean result = ConvertUtils.booleanFromPairs((Map<String, Object>) results.get(0));
+        return result;
+    }
+
+
+    @Override
+    public boolean isCustomerExists(String email, String password) {
+        Map<Integer, Object> params = new HashMap<>();
+        params.put(1, email);
+        params.put(2, password);
         List<?> results = DBUtils.runQueryWithResultSet(EXISTS_CUSTOMER, params);
         boolean result = ConvertUtils.booleanFromPairs((Map<String, Object>) results.get(0));
         return result;

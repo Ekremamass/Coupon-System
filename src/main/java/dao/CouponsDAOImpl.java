@@ -9,15 +9,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CouponDAOImpl implements CoupnDAO {
+public class CouponsDAOImpl implements CouponsDAO {
 
     private static final String INSERT_COUPON = "INSERT INTO `coupon_system`.`coupons` (`company_id`, `category_id`, `title`, `description`, `start_date`, `end_date`, `amount`, `price`, `image`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String UPDATE_COUPON = "UPDATE `coupon_system`.`coupons` SET `company_id` = ?, `category_id` = ?, `title` = ?, `description` = ?, `start_date` = ?, `end_date` = ?, `amount` = ?, `price` = ?, `image` = ? WHERE (`id` = ?);\n";
     private static final String DELETE_COUPON = "DELETE FROM coupon_system.coupons WHERE id = ?";
     private static final String GET_ALL_COUPONS = "SELECT * FROM coupon_system.coupons";
     private static final String GET_ONE_COUPON = "SELECT * FROM coupon_system.coupons WHERE id =?";
-    private static final String EXISTS_COUPON = "SELECT EXISTS (SELECT * FROM coupon_system.coupons WHERE id = ?) as res";
-
     private static final String INSERT_COUPON_CUSTOMER = "INSERT INTO `coupon_system`.`customers_vs_coupons` (`customer_id`, `coupon_id`) VALUES (?, ?)";
     private static final String DELETE_COUPON_CUSTOMER = "DELETE FROM coupon_system.customers_vs_coupons WHERE customer_id = ? AND coupon_id = ?";
 
@@ -77,15 +75,6 @@ public class CouponDAOImpl implements CoupnDAO {
         List<?> results = DBUtils.runQueryWithResultSet(GET_ONE_COUPON, params);
         Coupon coupon = ConvertUtils.couponFromPairs((Map<String, Object>) results.get(0));
         return coupon;
-    }
-
-    @Override
-    public boolean isExist(Integer id) {
-        Map<Integer, Object> params = new HashMap<>();
-        params.put(1, id);
-        List<?> results = DBUtils.runQueryWithResultSet(EXISTS_COUPON, params);
-        boolean result = ConvertUtils.booleanFromPairs((Map<String, Object>) results.get(0));
-        return result;
     }
 
     @Override

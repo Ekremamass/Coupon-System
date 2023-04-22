@@ -6,7 +6,7 @@ import db.DBUtils;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CategoryDAOImpl implements CategoryDAO {
+public class CategoriesDAOImpl implements CategoriesDAO {
     private static final String INSERT_CATEGORY = "INSERT INTO `coupon_system`.`categories` (`name`) VALUES (?);\n";
 
     @Override

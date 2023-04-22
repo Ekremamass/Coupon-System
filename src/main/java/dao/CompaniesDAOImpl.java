@@ -9,13 +9,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CompanyDAOImpl implements CompanyDAO {
+public class CompaniesDAOImpl implements CompaniesDAO {
     private static final String INSERT_COMPANY = "INSERT INTO `coupon_system`.`companies` (`name`, `email`, `password`) VALUES (?, ?, ?);\n";
     private static final String UPDATE_COMPANY = "UPDATE `coupon_system`.`companies` SET `name` = ?, `email` = ?, `password` = ? WHERE (`id` = ?);\n";
     private static final String DELETE_COMPANY = "DELETE FROM coupon_system.companies WHERE id = ?";
     private static final String GET_ALL_COMPANIES = "SELECT * FROM coupon_system.companies";
     private static final String GET_ONE_COMPANY = "SELECT * FROM coupon_system.companies WHERE id = ?";
-    private static final String EXISTS_COMPANY = "SELECT EXISTS (SELECT * FROM coupon_system.companies WHERE id = ?) as res";
+    private static final String EXISTS_COMPANY = "SELECT EXISTS (SELECT * FROM coupon_system.companies WHERE email = ? AND password = ?) as res";
+    private static final String EXISTS_ID = "SELECT EXISTS (SELECT * FROM coupon_system.companies WHERE id = ?) as res";
+    private static final String EXISTS_NAME = "SELECT EXISTS (SELECT * FROM coupon_system.companies WHERE name = ?) as res";
+    private static final String EXISTS_EMAIL = "SELECT EXISTS (SELECT * FROM coupon_system.companies WHERE email = ?) as res";
 
     @Override
     public void add(Company company) {
@@ -64,11 +67,40 @@ public class CompanyDAOImpl implements CompanyDAO {
     }
 
     @Override
-    public boolean isExist(Integer id) {
+    public boolean isExistsById(Integer id) {
         Map<Integer, Object> params = new HashMap<>();
         params.put(1, id);
+        List<?> results = DBUtils.runQueryWithResultSet(EXISTS_ID, params);
+        boolean result = ConvertUtils.booleanFromPairs((Map<String, Object>) results.get(0));
+        return result;
+    }
+
+    @Override
+    public boolean isCompanyExists(String email, String password) {
+        Map<Integer, Object> params = new HashMap<>();
+        params.put(1, email);
+        params.put(2, password);
         List<?> results = DBUtils.runQueryWithResultSet(EXISTS_COMPANY, params);
         boolean result = ConvertUtils.booleanFromPairs((Map<String, Object>) results.get(0));
         return result;
     }
+
+    @Override
+    public boolean isExistsByName(String name) {
+        Map<Integer, Object> params = new HashMap<>();
+        params.put(1, name);
+        List<?> results = DBUtils.runQueryWithResultSet(EXISTS_NAME, params);
+        boolean result = ConvertUtils.booleanFromPairs((Map<String, Object>) results.get(0));
+        return result;
+    }
+
+    @Override
+    public boolean isExistsByEmail(String email) {
+        Map<Integer, Object> params = new HashMap<>();
+        params.put(1, email);
+        List<?> results = DBUtils.runQueryWithResultSet(EXISTS_EMAIL, params);
+        boolean result = ConvertUtils.booleanFromPairs((Map<String, Object>) results.get(0));
+        return result;
+    }
+
 }
