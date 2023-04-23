@@ -64,7 +64,7 @@ public class DatabaseManager {
             "  CONSTRAINT `company_id`\n" +
             "    FOREIGN KEY (`company_id`)\n" +
             "    REFERENCES `coupon_system`.`companies` (`id`)\n" +
-            "    ON DELETE NO ACTION\n" +
+            "    ON DELETE CASCADE\n" +
             "    ON UPDATE NO ACTION,\n" +
             "  CONSTRAINT `category_id`\n" +
             "    FOREIGN KEY (`category_id`)\n" +
@@ -80,12 +80,12 @@ public class DatabaseManager {
             "  CONSTRAINT `customer_id`\n" +
             "    FOREIGN KEY (`customer_id`)\n" +
             "    REFERENCES `coupon_system`.`customers` (`id`)\n" +
-            "    ON DELETE NO ACTION\n" +
+            "    ON DELETE CASCADE\n" +
             "    ON UPDATE NO ACTION,\n" +
             "  CONSTRAINT `coupon_id`\n" +
             "    FOREIGN KEY (`coupon_id`)\n" +
             "    REFERENCES `coupon_system`.`coupons` (`id`)\n" +
-            "    ON DELETE NO ACTION\n" +
+            "    ON DELETE CASCADE\n" +
             "    ON UPDATE NO ACTION);\n";
 
     public static void startDatabase() {
@@ -307,5 +307,8 @@ public class DatabaseManager {
 
         couponDAO.getAll().forEach(System.out::println);
         System.out.println("-----------------------------------------------------");
+
+//        couponDAO.addCouponPurchase(1, 3);
+//        couponDAO.addCouponPurchase(2, 1);
     }
 }

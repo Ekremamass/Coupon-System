@@ -2,14 +2,15 @@ package facade;
 
 import beans.Company;
 import beans.Customer;
+import exceptions.CouponSystemException;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface AdminFacade {
-    void addCompany(Company company);
+    void addCompany(Company company) throws CouponSystemException;
 
-    void updateCompany(int id, Company company);
+    void updateCompany(int id, Company company) throws CouponSystemException;
 
     void deleteCompany(int id);
 
@@ -17,9 +18,9 @@ public interface AdminFacade {
 
     Optional<Company> getOneCompany(int id);
 
-    void addCustomer(Customer customer);
+    void addCustomer(Customer customer) throws CouponSystemException;
 
-    void updateCustomer(int id, Customer customer);
+    void updateCustomer(int id, Customer customer) throws CouponSystemException;
 
     void deleteCustomer(int id);
 

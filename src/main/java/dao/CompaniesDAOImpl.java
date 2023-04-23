@@ -15,6 +15,7 @@ public class CompaniesDAOImpl implements CompaniesDAO {
     private static final String DELETE_COMPANY = "DELETE FROM coupon_system.companies WHERE id = ?";
     private static final String GET_ALL_COMPANIES = "SELECT * FROM coupon_system.companies";
     private static final String GET_ONE_COMPANY = "SELECT * FROM coupon_system.companies WHERE id = ?";
+    private static final String GET_COMPANY_LOGIN = "SELECT * FROM coupon_system.companies WHERE email = ? AND password = ?";
     private static final String EXISTS_COMPANY = "SELECT EXISTS (SELECT * FROM coupon_system.companies WHERE email = ? AND password = ?) as res";
     private static final String EXISTS_ID = "SELECT EXISTS (SELECT * FROM coupon_system.companies WHERE id = ?) as res";
     private static final String EXISTS_NAME = "SELECT EXISTS (SELECT * FROM coupon_system.companies WHERE name = ?) as res";
@@ -83,6 +84,16 @@ public class CompaniesDAOImpl implements CompaniesDAO {
         List<?> results = DBUtils.runQueryWithResultSet(EXISTS_COMPANY, params);
         boolean result = ConvertUtils.booleanFromPairs((Map<String, Object>) results.get(0));
         return result;
+    }
+
+    @Override
+    public Company getCompanyLogin(String email, String password) {
+        Map<Integer, Object> params = new HashMap<>();
+        params.put(1, email);
+        params.put(2, password);
+        List<?> results = DBUtils.runQueryWithResultSet(GET_COMPANY_LOGIN, params);
+        Company company = ConvertUtils.companyFromPairs((Map<String, Object>) results.get(0));
+        return company;
     }
 
     @Override

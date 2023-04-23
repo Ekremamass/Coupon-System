@@ -75,7 +75,6 @@ public class DAOTests {
         System.out.println("deleting coupon with id='1' and printing all");
         couponDAO.delete(1);
         couponDAO.getAll().forEach(System.out::println);
-        
         DatabaseManager.endDatabase();
         System.out.println(Art.END);
     }
