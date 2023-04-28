@@ -7,4 +7,6 @@ public interface CustomersDAO extends DAO<Customer, Integer> {
 
     boolean isExistsByEmail(String email);
 
+    int getIdByEmail(String email);
+
 }

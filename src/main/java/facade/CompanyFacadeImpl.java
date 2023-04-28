@@ -14,18 +14,20 @@ public class CompanyFacadeImpl extends ClientFacade implements CompanyFacade {
 
     @Override
     public boolean login(String email, String password) {
-        Company company = companiesDAO.getCompanyLogin(email, password);
-        if (company == null) {
-            return false;
+        if (companiesDAO.isCompanyExists(email, password)) {
+            companyId = companiesDAO.getIdByEmail(email);
+            return true;
         }
-        companyId = company.getId();
-        return true;
+        return false;
     }
 
     @Override
     public void addCoupon(Coupon coupon) throws CouponSystemException {
         if (couponsDAO.isExistsByTitle(companyId, coupon.getTitle())) {
             throw new CouponSystemException(ErrMsg.COUPON_TITLE_EXISTS);
+        }
+        if (coupon.getCompanyID() != companyId) {
+            throw new CouponSystemException(ErrMsg.COUPON_WRONG_COMPANY);
         }
         couponsDAO.add(coupon);
     }
@@ -68,6 +70,7 @@ public class CompanyFacadeImpl extends ClientFacade implements CompanyFacade {
     @Override
     public Company getCompanyDetails() {
         Company company = companiesDAO.getOne(companyId);
+        company.setCoupons(getCompanyCoupons());
         return company;
     }
 }

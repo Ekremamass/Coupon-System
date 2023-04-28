@@ -5,7 +5,7 @@ import beans.Company;
 public interface CompaniesDAO extends DAO<Company, Integer> {
     boolean isCompanyExists(String email, String password);
 
-    Company getCompanyLogin(String email, String password);
+    int getIdByEmail(String email);
 
     boolean isExistsByName(String name);
 

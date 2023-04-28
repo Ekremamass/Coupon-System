@@ -62,4 +62,9 @@ public class ConvertUtils {
         boolean res = ((long) map.get("res") == 1);
         return res;
     }
+
+    public static int idFromPairs(Map<String, Object> map) {
+        int id = (int) map.get("id");
+        return id;
+    }
 }

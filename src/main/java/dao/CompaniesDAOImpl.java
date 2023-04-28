@@ -20,6 +20,7 @@ public class CompaniesDAOImpl implements CompaniesDAO {
     private static final String EXISTS_ID = "SELECT EXISTS (SELECT * FROM coupon_system.companies WHERE id = ?) as res";
     private static final String EXISTS_NAME = "SELECT EXISTS (SELECT * FROM coupon_system.companies WHERE name = ?) as res";
     private static final String EXISTS_EMAIL = "SELECT EXISTS (SELECT * FROM coupon_system.companies WHERE email = ?) as res";
+    private static final String GET_ID_BY_EMAIL = "SELECT id FROM coupon_system.companies WHERE email=?";
 
     @Override
     public void add(Company company) {
@@ -87,13 +88,12 @@ public class CompaniesDAOImpl implements CompaniesDAO {
     }
 
     @Override
-    public Company getCompanyLogin(String email, String password) {
+    public int getIdByEmail(String email) {
         Map<Integer, Object> params = new HashMap<>();
         params.put(1, email);
-        params.put(2, password);
-        List<?> results = DBUtils.runQueryWithResultSet(GET_COMPANY_LOGIN, params);
-        Company company = ConvertUtils.companyFromPairs((Map<String, Object>) results.get(0));
-        return company;
+        List<?> results = DBUtils.runQueryWithResultSet(GET_ID_BY_EMAIL, params);
+        int id = ConvertUtils.idFromPairs((Map<String, Object>) results.get(0));
+        return id;
     }
 
     @Override

@@ -20,4 +20,13 @@ public interface CouponsDAO extends DAO<Coupon, Integer> {
     List<Coupon> getCompanyCoupons(int companyId, Category category);
 
     List<Coupon> getCompanyCoupons(int companyId, double maxPrice);
+
+    boolean isExistsPurchase(int customerId, int couponId);
+
+    List<Coupon> getCouponsByCustomer(int customerId);
+
+    List<Coupon> getCouponsByCustomer(int customerId, Category category);
+
+    List<Coupon> getCouponsByCustomer(int customerId, double MaxPrice);
+
 }

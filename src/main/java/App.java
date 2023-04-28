@@ -1,6 +1,7 @@
 import db.DatabaseManager;
 import tests.AdminFacadeTest;
 import tests.CompanyFacadeTest;
+import tests.CustomerFacadeTest;
 import utils.Art;
 
 public class App {
@@ -15,6 +16,8 @@ public class App {
         CompanyFacadeTest companyFacadeTest = new CompanyFacadeTest();
         companyFacadeTest.testAsCompany();
 
+        CustomerFacadeTest customerFacadeTest = new CustomerFacadeTest();
+        customerFacadeTest.testAsCustomer();
         DatabaseManager.endDatabase();
         System.out.println(Art.END);
     }

@@ -56,9 +56,12 @@ public class AdminFacadeImpl extends ClientFacade implements AdminFacade {
     }
 
     @Override
-    public Optional<Company> getOneCompany(int id) {
-        Company company = companiesDAO.getOne(id);
-        return Optional.of(company);
+    public Optional<Company> getOneCompany(int id) throws CouponSystemException {
+        if (companiesDAO.isExistsById(id)) {
+            Company company = companiesDAO.getOne(id);
+            return Optional.of(company);
+        }
+        throw new CouponSystemException(ErrMsg.COMPANY_NOT_FOUND);
     }
 
     @Override

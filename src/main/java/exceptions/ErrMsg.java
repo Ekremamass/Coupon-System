@@ -13,8 +13,14 @@ public enum ErrMsg {
     CUSTOMER_EMAIL_EXISTS("customer email already exists"),
     CUSTOMER_ID_NOT_MATCH("cannot update customer id"),
     COUPON_TITLE_EXISTS("coupon with the same title already exists for this company"),
+    COUPON_WRONG_COMPANY("cannot add coupon of another company"),
     COUPON_ID_NOT_MATCH("cannot update coupon id"),
-    COUPON_COMPANY_NOT_MATCH("cannot update company id of coupon");
+    COUPON_COMPANY_NOT_MATCH("cannot update company id of coupon"),
+    COUPON_ALREADY_PURCHASED("cannot purchase coupon again"),
+    COUPON_AMOUNT_ZERO("cannot purchase coupon - there is no coupons left"),
+    COUPON_EXPIRED("cannot purchase expired coupon"),
+    LOGIN_FAILED("wrong login details"),
+    COMPANY_NOT_FOUND("no company with given id");
     private String message;
 
     ErrMsg(String message) {

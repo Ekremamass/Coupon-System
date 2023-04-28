@@ -3,21 +3,29 @@ package tests;
 import beans.Company;
 import beans.Customer;
 import exceptions.CouponSystemException;
+import facade.AdminFacade;
 import facade.AdminFacadeImpl;
+import login.ClientType;
+import login.LoginManager;
 
 public class AdminFacadeTest {
-    private static AdminFacadeImpl adminFacade = new AdminFacadeImpl();
+    private static AdminFacade adminFacade;
+    private static LoginManager loginManager = LoginManager.getInstance();
 
     public void testAsAdmin() {
-        Test.test("Admin Facade - bad login - wrong email");
-        System.out.println(adminFacade.login("stam@stam.com", "admin"));
-        Test.test("Admin Facade - bad login - wrong password");
-        System.out.println(adminFacade.login("admin@admin.com", "stam"));
-        Test.test("Admin Facade - bad login - wrong email and password");
-        System.out.println(adminFacade.login("stam@stam.com", "stam"));
-        Test.test("Admin Facade - good login");
-        System.out.println(adminFacade.login("admin@admin.com", "admin"));
+        Test.test("Admin Facade - bad login");
+        try {
+            adminFacade = (AdminFacadeImpl) loginManager.login("stam@email.com", "1234", ClientType.ADMINSTRATOR);
+        } catch (CouponSystemException e) {
+            System.out.println(e.getMessage());
+        }
 
+        Test.test("Admin Facade - good login");
+        try {
+            adminFacade = (AdminFacadeImpl) loginManager.login("admin@admin.com", "admin", ClientType.ADMINSTRATOR);
+        } catch (CouponSystemException e) {
+            System.out.println(e.getMessage());
+        }
 
         Test.test("Admin Facade - bad add company - same name");
         Company c1 = Company.builder()
@@ -89,10 +97,21 @@ public class AdminFacadeTest {
         }
 
         Test.test("Admin Facade - get one company id=11");
-        System.out.println(adminFacade.getOneCompany(11).get());
+        try {
+            System.out.println(adminFacade.getOneCompany(11).orElseThrow(() -> new Exception("Company doesn't exist")));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        Test.test("Admin Facade - get one company id=15 - doesn't exist");
+        try {
+            System.out.println(adminFacade.getOneCompany(11).orElseThrow(() -> new Exception("Company doesn't exist")));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
 
         Test.test("Admin Facade - delete company id=11");
-        adminFacade.deleteCompany(11);
+        adminFacade.deleteCompany(15);
 
         Test.test("Admin Facade - get all companies");
         adminFacade.getAllCompanies().forEach(System.out::println);

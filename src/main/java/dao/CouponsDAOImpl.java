@@ -24,8 +24,15 @@ public class CouponsDAOImpl implements CouponsDAO {
     private static final String INSERT_COUPON_CUSTOMER = "INSERT INTO `coupon_system`.`customers_vs_coupons` (`customer_id`, `coupon_id`) VALUES (?, ?)";
     private static final String DELETE_COUPON_CUSTOMER = "DELETE FROM coupon_system.customers_vs_coupons WHERE customer_id = ? AND coupon_id = ?";
     private static final String EXISTS_ID = "SELECT EXISTS (SELECT * FROM coupon_system.coupons WHERE id = ?) as res";
-    private static final String EXISTS_COMPANY_ID_TITLE = "SELECT EXISTS (SELECT * FROM coupon_system.coupons WHERE company_id = ? AND title = ? ) as res";
+    private static final String EXISTS_COMPANY_TITLE = "SELECT EXISTS (SELECT * FROM coupon_system.coupons WHERE company_id = ? AND title = ? ) as res";
+    private static final String EXISTS_PURCHASE = "SELECT EXISTS (SELECT * FROM coupon_system.customers_vs_coupons WHERE customer_id = ? AND coupon_id = ?) as res;";
 
+    private static final String GET_COUPONS_BY_CUSTOMER = "SELECT coupons.id,coupons.company_id,coupons.category_id,coupons.title,coupons.description,coupons.start_date,coupons.end_date,coupons.amount,coupons.price,coupons.image FROM coupon_system.coupons \n" +
+            "INNER JOIN coupon_system.customers_vs_coupons ON coupons.id=customers_vs_coupons.coupon_id WHERE customer_id=?";
+    private static final String GET_COUPONS_BY_CUSTOMER_CATEGORY = "SELECT coupons.id,coupons.company_id,coupons.category_id,coupons.title,coupons.description,coupons.start_date,coupons.end_date,coupons.amount,coupons.price,coupons.image FROM coupon_system.coupons \n" +
+            "INNER JOIN coupon_system.customers_vs_coupons ON coupons.id=customers_vs_coupons.coupon_id WHERE customer_id=? AND category_id=?";
+    private static final String GET_COUPONS_BY_CUSTOMER_MAX_PRICE = "SELECT coupons.id,coupons.company_id,coupons.category_id,coupons.title,coupons.description,coupons.start_date,coupons.end_date,coupons.amount,coupons.price,coupons.image FROM coupon_system.coupons \n" +
+            "INNER JOIN coupon_system.customers_vs_coupons ON coupons.id=customers_vs_coupons.coupon_id WHERE customer_id=? AND price<=?";
 
     @Override
     public void add(Coupon coupon) {
@@ -122,7 +129,7 @@ public class CouponsDAOImpl implements CouponsDAO {
         Map<Integer, Object> params = new HashMap<>();
         params.put(1, companyId);
         params.put(2, title);
-        List<?> results = DBUtils.runQueryWithResultSet(EXISTS_COMPANY_ID_TITLE, params);
+        List<?> results = DBUtils.runQueryWithResultSet(EXISTS_COMPANY_TITLE, params);
         boolean result = ConvertUtils.booleanFromPairs((Map<String, Object>) results.get(0));
         return result;
     }
@@ -161,6 +168,57 @@ public class CouponsDAOImpl implements CouponsDAO {
         params.put(2, maxPrice);
         List<Coupon> coupons = new ArrayList<>();
         List<?> results = DBUtils.runQueryWithResultSet(GET_COMPANY_COUPONS_MAX_PRICE, params);
+        for (Object obj : results) {
+            Coupon coupon = ConvertUtils.couponFromPairs((Map<String, Object>) obj);
+            coupons.add(coupon);
+        }
+        return coupons;
+    }
+
+    @Override
+    public boolean isExistsPurchase(int customerId, int couponId) {
+        Map<Integer, Object> params = new HashMap<>();
+        params.put(1, customerId);
+        params.put(2, couponId);
+        List<?> results = DBUtils.runQueryWithResultSet(EXISTS_PURCHASE, params);
+        boolean result = ConvertUtils.booleanFromPairs((Map<String, Object>) results.get(0));
+        return result;
+    }
+
+    @Override
+    public List<Coupon> getCouponsByCustomer(int customerId) {
+        Map<Integer, Object> params = new HashMap<>();
+        params.put(1, customerId);
+        List<Coupon> coupons = new ArrayList<>();
+        List<?> results = DBUtils.runQueryWithResultSet(GET_COUPONS_BY_CUSTOMER, params);
+        for (Object obj : results) {
+            Coupon coupon = ConvertUtils.couponFromPairs((Map<String, Object>) obj);
+            coupons.add(coupon);
+        }
+        return coupons;
+    }
+
+    @Override
+    public List<Coupon> getCouponsByCustomer(int customerId, Category category) {
+        Map<Integer, Object> params = new HashMap<>();
+        params.put(1, customerId);
+        params.put(2, category.DBValue());
+        List<Coupon> coupons = new ArrayList<>();
+        List<?> results = DBUtils.runQueryWithResultSet(GET_COUPONS_BY_CUSTOMER_CATEGORY, params);
+        for (Object obj : results) {
+            Coupon coupon = ConvertUtils.couponFromPairs((Map<String, Object>) obj);
+            coupons.add(coupon);
+        }
+        return coupons;
+    }
+
+    @Override
+    public List<Coupon> getCouponsByCustomer(int customerId, double MaxPrice) {
+        Map<Integer, Object> params = new HashMap<>();
+        params.put(1, customerId);
+        params.put(2, MaxPrice);
+        List<Coupon> coupons = new ArrayList<>();
+        List<?> results = DBUtils.runQueryWithResultSet(GET_COUPONS_BY_CUSTOMER_MAX_PRICE, params);
         for (Object obj : results) {
             Coupon coupon = ConvertUtils.couponFromPairs((Map<String, Object>) obj);
             coupons.add(coupon);

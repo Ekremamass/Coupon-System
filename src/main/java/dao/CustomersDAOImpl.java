@@ -18,6 +18,7 @@ public class CustomersDAOImpl implements CustomersDAO {
     private static final String EXISTS_CUSTOMER = "SELECT EXISTS (SELECT * FROM coupon_system.customers WHERE email = ? AND password = ?) as res";
     private static final String EXISTS_ID = "SELECT EXISTS (SELECT * FROM coupon_system.customers WHERE id = ?) as res";
     private static final String EXISTS_EMAIl = "SELECT EXISTS (SELECT * FROM coupon_system.customers WHERE email = ?) as res";
+    private static final String GET_ID_BY_EMAIL = "SELECT id FROM coupon_system.customers WHERE email=?";
 
 
     @Override
@@ -96,5 +97,14 @@ public class CustomersDAOImpl implements CustomersDAO {
         List<?> results = DBUtils.runQueryWithResultSet(EXISTS_EMAIl, params);
         boolean result = ConvertUtils.booleanFromPairs((Map<String, Object>) results.get(0));
         return result;
+    }
+
+    @Override
+    public int getIdByEmail(String email) {
+        Map<Integer, Object> params = new HashMap<>();
+        params.put(1, email);
+        List<?> results = DBUtils.runQueryWithResultSet(GET_ID_BY_EMAIL, params);
+        int id = ConvertUtils.idFromPairs((Map<String, Object>) results.get(0));
+        return id;
     }
 }

@@ -302,13 +302,25 @@ public class DatabaseManager {
                 .image("https://media1.giphy.com/media/3o6nV8OYdUhiuKja1i/giphy.gif?cid=ecf05e47zap0mk2hvwrmdnqhz58v80tufdxbq8tbjpyx3bbq&rid=giphy.gif&ct=g")
                 .build();
 
-        List<Coupon> coupons = List.of(c1, c2, c3);
+        Coupon c4 = Coupon.builder()
+                .companyID(1)
+                .category(Category.ELECTRICITY)
+                .title("Laptop + bag")
+                .description("buy laptop get free bag")
+                .startDate(Date.valueOf(LocalDate.now()))
+                .endDate(Date.valueOf(LocalDate.now().plusWeeks(4)))
+                .amount(100)
+                .price(3200.0)
+                .image("https://media1.giphy.com/media/VbnUQpnihPSIgIXuZv/giphy.gif?cid=ecf05e47buqlag8yzqk4s9ipwacv2n543e4i6jsuv6afgok5&rid=giphy.gif&ct=g")
+                .build();
+
+        List<Coupon> coupons = List.of(c1, c2, c3, c4);
         couponDAO.addAll(coupons);
 
         couponDAO.getAll().forEach(System.out::println);
         System.out.println("-----------------------------------------------------");
-
-//        couponDAO.addCouponPurchase(1, 3);
-//        couponDAO.addCouponPurchase(2, 1);
+        couponDAO.addCouponPurchase(1, 3);
+        couponDAO.addCouponPurchase(1, 2);
+        couponDAO.addCouponPurchase(2, 1);
     }
 }

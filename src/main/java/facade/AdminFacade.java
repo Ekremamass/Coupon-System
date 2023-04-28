@@ -16,7 +16,7 @@ public interface AdminFacade {
 
     List<Company> getAllCompanies();
 
-    Optional<Company> getOneCompany(int id);
+    Optional<Company> getOneCompany(int id) throws CouponSystemException;
 
     void addCustomer(Customer customer) throws CouponSystemException;
 
