@@ -314,7 +314,19 @@ public class DatabaseManager {
                 .image("https://media1.giphy.com/media/VbnUQpnihPSIgIXuZv/giphy.gif?cid=ecf05e47buqlag8yzqk4s9ipwacv2n543e4i6jsuv6afgok5&rid=giphy.gif&ct=g")
                 .build();
 
-        List<Coupon> coupons = List.of(c1, c2, c3, c4);
+        Coupon c5 = Coupon.builder()
+                .companyID(9)
+                .category(Category.FOOD)
+                .title("6+2 ON ALL DRINKS")
+                .description("get 8 carton instead of 6 - All Drinks")
+                .startDate(Date.valueOf(LocalDate.now().minusWeeks(2)))
+                .endDate(Date.valueOf(LocalDate.now().minusDays(2)))
+                .amount(50)
+                .price(48.0)
+                .image("https://media4.giphy.com/media/BdXrpSYzVOf0A/giphy.gif?cid=ecf05e47q738c0ciq6v7l7e93d0dueihxw8y7kqjgiprr2g4&ep=v1_gifs_search&rid=giphy.gif&ct=g")
+                .build();
+
+        List<Coupon> coupons = List.of(c1, c2, c3, c4, c5);
         couponDAO.addAll(coupons);
 
         couponDAO.getAll().forEach(System.out::println);

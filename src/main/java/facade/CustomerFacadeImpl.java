@@ -28,6 +28,9 @@ public class CustomerFacadeImpl extends ClientFacade implements CustomerFacade {
 
     @Override
     public void purchaseCoupon(Coupon coupon) throws CouponSystemException {
+        if (!couponsDAO.isExistsById(coupon.getId())) {
+            throw new CouponSystemException(ErrMsg.COUPON_NOT_EXISTS);
+        }
         if (couponsDAO.isExistsPurchase(customerId, coupon.getId())) {
             throw new CouponSystemException(ErrMsg.COUPON_ALREADY_PURCHASED);
         }

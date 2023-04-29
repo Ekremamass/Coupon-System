@@ -29,4 +29,6 @@ public interface CouponsDAO extends DAO<Coupon, Integer> {
 
     List<Coupon> getCouponsByCustomer(int customerId, double MaxPrice);
 
+    void deleteExpiredCoupons();
+
 }

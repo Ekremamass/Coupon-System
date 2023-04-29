@@ -34,18 +34,23 @@ public class AdminFacadeImpl extends ClientFacade implements AdminFacade {
 
     @Override
     public void updateCompany(int id, Company company) throws CouponSystemException {
-        Company c = companiesDAO.getOne(id);
-        if (c == null || c.getId() != company.getId()) {
+        if (!companiesDAO.isExistsById(id)) {
+            throw new CouponSystemException(ErrMsg.COMPANY_NOT_EXIST);
+        }
+        if (id != company.getId()) {
             throw new CouponSystemException(ErrMsg.COMPANY_ID_NOT_MATCH);
         }
-        if (!c.getName().equals(company.getName())) {
+        if (!companiesDAO.getOne(id).getName().equals(company.getName())) {
             throw new CouponSystemException(ErrMsg.COMPANY_NAME_NOT_MATCH);
         }
         companiesDAO.update(id, company);
     }
 
     @Override
-    public void deleteCompany(int id) {
+    public void deleteCompany(int id) throws CouponSystemException {
+        if (!companiesDAO.isExistsById(id)) {
+            throw new CouponSystemException(ErrMsg.COMPANY_NOT_EXIST);
+        }
         companiesDAO.delete(id);
     }
 
@@ -57,11 +62,11 @@ public class AdminFacadeImpl extends ClientFacade implements AdminFacade {
 
     @Override
     public Optional<Company> getOneCompany(int id) throws CouponSystemException {
-        if (companiesDAO.isExistsById(id)) {
-            Company company = companiesDAO.getOne(id);
-            return Optional.of(company);
+        if (!companiesDAO.isExistsById(id)) {
+            throw new CouponSystemException(ErrMsg.COMPANY_NOT_EXIST);
         }
-        throw new CouponSystemException(ErrMsg.COMPANY_NOT_FOUND);
+        Company company = companiesDAO.getOne(id);
+        return Optional.of(company);
     }
 
     @Override
@@ -78,15 +83,20 @@ public class AdminFacadeImpl extends ClientFacade implements AdminFacade {
 
     @Override
     public void updateCustomer(int id, Customer customer) throws CouponSystemException {
-        Customer c = customersDAO.getOne(id);
-        if (c == null || c.getId() != customer.getId()) {
+        if (!customersDAO.isExistsById(id)) {
+            throw new CouponSystemException(ErrMsg.CUSTOMER_NOT_EXISTS);
+        }
+        if (id != customer.getId()) {
             throw new CouponSystemException(ErrMsg.CUSTOMER_ID_NOT_MATCH);
         }
         customersDAO.update(id, customer);
     }
 
     @Override
-    public void deleteCustomer(int id) {
+    public void deleteCustomer(int id) throws CouponSystemException {
+        if (!customersDAO.isExistsById(id)) {
+            throw new CouponSystemException(ErrMsg.CUSTOMER_NOT_EXISTS);
+        }
         customersDAO.delete(id);
     }
 
@@ -97,7 +107,10 @@ public class AdminFacadeImpl extends ClientFacade implements AdminFacade {
     }
 
     @Override
-    public Optional<Customer> getOneCustomer(int id) {
+    public Optional<Customer> getOneCustomer(int id) throws CouponSystemException {
+        if (!customersDAO.isExistsById(id)) {
+            throw new CouponSystemException(ErrMsg.CUSTOMER_NOT_EXISTS);
+        }
         Customer customer = customersDAO.getOne(id);
         return Optional.of(customer);
     }

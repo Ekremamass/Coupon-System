@@ -34,6 +34,9 @@ public class CompanyFacadeImpl extends ClientFacade implements CompanyFacade {
 
     @Override
     public void updateCoupon(int id, Coupon coupon) throws CouponSystemException {
+        if (!couponsDAO.isExistsById(id)) {
+            throw new CouponSystemException(ErrMsg.COUPON_NOT_EXISTS);
+        }
         Coupon original = couponsDAO.getOne(id);
         if (original.getId() != coupon.getId()) {
             throw new CouponSystemException(ErrMsg.COUPON_ID_NOT_MATCH);
@@ -45,7 +48,10 @@ public class CompanyFacadeImpl extends ClientFacade implements CompanyFacade {
     }
 
     @Override
-    public void deleteCoupon(int id) {
+    public void deleteCoupon(int id) throws CouponSystemException {
+        if (!couponsDAO.isExistsById(id)) {
+            throw new CouponSystemException(ErrMsg.COUPON_NOT_EXISTS);
+        }
         couponsDAO.delete(id);
     }
 

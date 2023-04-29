@@ -12,7 +12,7 @@ public interface AdminFacade {
 
     void updateCompany(int id, Company company) throws CouponSystemException;
 
-    void deleteCompany(int id);
+    void deleteCompany(int id) throws CouponSystemException;
 
     List<Company> getAllCompanies();
 
@@ -22,10 +22,10 @@ public interface AdminFacade {
 
     void updateCustomer(int id, Customer customer) throws CouponSystemException;
 
-    void deleteCustomer(int id);
+    void deleteCustomer(int id) throws CouponSystemException;
 
     List<Customer> getAllCustomers();
 
-    Optional<Customer> getOneCustomer(int id);
+    Optional<Customer> getOneCustomer(int id) throws CouponSystemException;
 
 }

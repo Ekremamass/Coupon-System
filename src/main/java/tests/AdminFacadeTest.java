@@ -7,15 +7,30 @@ import facade.AdminFacade;
 import facade.AdminFacadeImpl;
 import login.ClientType;
 import login.LoginManager;
+import utils.Art;
 
 public class AdminFacadeTest {
     private static AdminFacade adminFacade;
     private static LoginManager loginManager = LoginManager.getInstance();
 
     public void testAsAdmin() {
-        Test.test("Admin Facade - bad login");
+        System.out.println(Art.ADMIN_FACADE);
+        
+        Test.test("Admin Facade - bad login - wrong email");
         try {
-            adminFacade = (AdminFacadeImpl) loginManager.login("stam@email.com", "1234", ClientType.ADMINSTRATOR);
+            adminFacade = (AdminFacadeImpl) loginManager.login("stam@email.com", "admin", ClientType.ADMINSTRATOR);
+        } catch (CouponSystemException e) {
+            System.out.println(e.getMessage());
+        }
+        Test.test("Admin Facade - bad login - wrong password");
+        try {
+            adminFacade = (AdminFacadeImpl) loginManager.login("admin@admin.com", "stam", ClientType.ADMINSTRATOR);
+        } catch (CouponSystemException e) {
+            System.out.println(e.getMessage());
+        }
+        Test.test("Admin Facade - bad login - wrong email and password");
+        try {
+            adminFacade = (AdminFacadeImpl) loginManager.login("stam@email.com", "stam", ClientType.ADMINSTRATOR);
         } catch (CouponSystemException e) {
             System.out.println(e.getMessage());
         }
@@ -111,7 +126,11 @@ public class AdminFacadeTest {
         }
 
         Test.test("Admin Facade - delete company id=11");
-        adminFacade.deleteCompany(15);
+        try {
+            adminFacade.deleteCompany(11);
+        } catch (CouponSystemException e) {
+            System.out.println(e.getMessage());
+        }
 
         Test.test("Admin Facade - get all companies");
         adminFacade.getAllCompanies().forEach(System.out::println);
@@ -169,10 +188,18 @@ public class AdminFacadeTest {
         }
 
         Test.test("Admin Facade - get one customer - id=11");
-        System.out.println(adminFacade.getOneCustomer(11).get());
+        try {
+            System.out.println(adminFacade.getOneCustomer(11).get());
+        } catch (CouponSystemException e) {
+            System.out.println(e.getMessage());
+        }
 
         Test.test("Admin Facade - delete customer - id=11");
-        adminFacade.deleteCustomer(11);
+        try {
+            adminFacade.deleteCustomer(11);
+        } catch (CouponSystemException e) {
+            System.out.println(e.getMessage());
+        }
 
 
         Test.test("Admin Facade - get all customers");

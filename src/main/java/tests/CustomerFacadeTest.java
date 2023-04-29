@@ -8,6 +8,7 @@ import exceptions.CouponSystemException;
 import facade.CustomerFacade;
 import login.ClientType;
 import login.LoginManager;
+import utils.Art;
 
 public class CustomerFacadeTest {
 
@@ -15,6 +16,8 @@ public class CustomerFacadeTest {
     private static LoginManager loginManager = LoginManager.getInstance();
 
     public void testAsCustomer() {
+        System.out.println(Art.CUSTOMER_FACADE);
+
         Test.test("Customer Facade - bad login");
         try {
             customerFacade = (CustomerFacade) loginManager.login("stam@email.com", "1234", ClientType.CUSTOMER);
@@ -38,7 +41,7 @@ public class CustomerFacadeTest {
             System.out.println(e.getMessage());
         }
 
-        Test.test("Customer Facade - bad purchase");
+        Test.test("Customer Facade - bad purchase - already purchased");
         try {
             customerFacade.purchaseCoupon(toPurchase);
         } catch (CouponSystemException e) {

@@ -7,6 +7,7 @@ import exceptions.CouponSystemException;
 import facade.CompanyFacade;
 import login.ClientType;
 import login.LoginManager;
+import utils.Art;
 
 import java.sql.Date;
 import java.time.LocalDate;
@@ -16,9 +17,23 @@ public class CompanyFacadeTest {
     private static LoginManager loginManager = LoginManager.getInstance();
 
     public void testAsCompany() {
-        Test.test("Company Facade - bad login");
+        System.out.println(Art.COMPANY_FACADE);
+        
+        Test.test("Company Facade - bad login - wrong email");
         try {
             companyFacade = (CompanyFacade) loginManager.login("stam@stam.com", "1234", ClientType.COMPANY);
+        } catch (CouponSystemException e) {
+            System.out.println(e.getMessage());
+        }
+        Test.test("Company Facade - bad login - wrong password");
+        try {
+            companyFacade = (CompanyFacade) loginManager.login("KSP@KSP.com", "stam", ClientType.COMPANY);
+        } catch (CouponSystemException e) {
+            System.out.println(e.getMessage());
+        }
+        Test.test("Company Facade - bad login - wrong email and password");
+        try {
+            companyFacade = (CompanyFacade) loginManager.login("stam@stam.com", "stam", ClientType.COMPANY);
         } catch (CouponSystemException e) {
             System.out.println(e.getMessage());
         }
@@ -58,16 +73,16 @@ public class CompanyFacadeTest {
         Test.test("Company Facade - bad update coupon - changed id");
         coupon.setId(2);
         try {
-            companyFacade.updateCoupon(5, coupon);
+            companyFacade.updateCoupon(6, coupon);
         } catch (CouponSystemException e) {
             System.out.println(e.getMessage());
         }
 
         Test.test("Company Facade - bad update coupon - changed company id");
-        coupon.setId(5);
+        coupon.setId(6);
         coupon.setCompanyID(2);
         try {
-            companyFacade.updateCoupon(5, coupon);
+            companyFacade.updateCoupon(6, coupon);
         } catch (CouponSystemException e) {
             System.out.println(e.getMessage());
         }
@@ -78,7 +93,7 @@ public class CompanyFacadeTest {
         coupon.setTitle("30% OFF Everything!!!");
         coupon.setDescription("price 30% off all products");
         try {
-            companyFacade.updateCoupon(5, coupon);
+            companyFacade.updateCoupon(6, coupon);
         } catch (CouponSystemException e) {
             System.out.println(e.getMessage());
         }
@@ -93,7 +108,11 @@ public class CompanyFacadeTest {
         companyFacade.getCompanyCoupons(500.0).forEach(System.out::println);
 
         Test.test("Company Facade - delete coupon id=5");
-        companyFacade.deleteCoupon(5);
+        try {
+            companyFacade.deleteCoupon(6);
+        } catch (CouponSystemException e) {
+            System.out.println(e.getMessage());
+        }
 
         Test.test("Company Facade - show all company coupons");
         companyFacade.getCompanyCoupons().forEach(System.out::println);

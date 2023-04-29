@@ -5,6 +5,8 @@ import beans.Coupon;
 import db.ConvertUtils;
 import db.DBUtils;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,6 +35,8 @@ public class CouponsDAOImpl implements CouponsDAO {
             "INNER JOIN coupon_system.customers_vs_coupons ON coupons.id=customers_vs_coupons.coupon_id WHERE customer_id=? AND category_id=?";
     private static final String GET_COUPONS_BY_CUSTOMER_MAX_PRICE = "SELECT coupons.id,coupons.company_id,coupons.category_id,coupons.title,coupons.description,coupons.start_date,coupons.end_date,coupons.amount,coupons.price,coupons.image FROM coupon_system.coupons \n" +
             "INNER JOIN coupon_system.customers_vs_coupons ON coupons.id=customers_vs_coupons.coupon_id WHERE customer_id=? AND price<=?";
+
+    private static final String DELETE_EXPIRED_COUPONS = "DELETE FROM coupon_system.coupons WHERE end_date < ?";
 
     @Override
     public void add(Coupon coupon) {
@@ -224,5 +228,12 @@ public class CouponsDAOImpl implements CouponsDAO {
             coupons.add(coupon);
         }
         return coupons;
+    }
+
+    @Override
+    public void deleteExpiredCoupons() {
+        Map<Integer, Object> params = new HashMap<>();
+        params.put(1, Date.valueOf(LocalDate.now()));
+        DBUtils.runQuery(DELETE_EXPIRED_COUPONS, params);
     }
 }
