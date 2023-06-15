@@ -7,9 +7,10 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
 @Builder
 public class Customer {
     private int id;

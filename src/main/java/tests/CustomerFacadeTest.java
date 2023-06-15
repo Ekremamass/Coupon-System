@@ -32,7 +32,7 @@ public class CustomerFacadeTest {
             System.out.println(e.getMessage());
         }
 
-        Test.test("Customer Facade - good purchase");
+        Test.test("Customer Facade - good purchase coupon id=1");
         CouponsDAO couponsDAO = new CouponsDAOImpl();
         Coupon toPurchase = couponsDAO.getOne(1);
         try {

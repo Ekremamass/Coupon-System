@@ -7,10 +7,10 @@ import lombok.NoArgsConstructor;
 
 import java.sql.Date;
 
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Data
 public class Coupon {
     private int id;
     private int companyID;
@@ -23,7 +23,6 @@ public class Coupon {
 
     private double price;
     private String image;
-
 
 
 }
