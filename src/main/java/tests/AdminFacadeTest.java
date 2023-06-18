@@ -15,7 +15,7 @@ public class AdminFacadeTest {
 
     public void testAsAdmin() {
         System.out.println(Art.ADMIN_FACADE);
-        
+
         Test.test("Admin Facade - bad login - wrong email");
         try {
             adminFacade = (AdminFacadeImpl) loginManager.login("stam@email.com", "admin", ClientType.ADMINSTRATOR);
@@ -120,7 +120,7 @@ public class AdminFacadeTest {
 
         Test.test("Admin Facade - get one company id=15 - doesn't exist");
         try {
-            System.out.println(adminFacade.getOneCompany(11).orElseThrow(() -> new Exception("Company doesn't exist")));
+            System.out.println(adminFacade.getOneCompany(15).orElseThrow(() -> new Exception("Company doesn't exist")));
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

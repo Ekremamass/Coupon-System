@@ -18,7 +18,7 @@ public class CompanyFacadeTest {
 
     public void testAsCompany() {
         System.out.println(Art.COMPANY_FACADE);
-        
+
         Test.test("Company Facade - bad login - wrong email");
         try {
             companyFacade = (CompanyFacade) loginManager.login("stam@stam.com", "1234", ClientType.COMPANY);
@@ -107,7 +107,7 @@ public class CompanyFacadeTest {
         Test.test("Company Facade - show all company coupons - max price 500");
         companyFacade.getCompanyCoupons(500.0).forEach(System.out::println);
 
-        Test.test("Company Facade - delete coupon id=5");
+        Test.test("Company Facade - delete coupon id=6");
         try {
             companyFacade.deleteCoupon(6);
         } catch (CouponSystemException e) {
